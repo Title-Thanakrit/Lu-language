@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lu Language Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thai to Lu Conversion</h1>
+    <div>
+        <label>พยางค์ที่ 1</label><br>
+        <input type="text" id="input_text1"><br><br>
+        <label>พยางค์ที่ 2</label><br>
+        <input type="text" id="input_text2"><br><br>
+        <button onclick="convert()">Convert</button>
+    </div>
+    <div id="output"></div>
+
+    <script>
+        function convert() {
+            var input_text1 = document.getElementById("input_text1").value;
+            var input_text2 = document.getElementById("input_text2").value;
+            var lu_out1 = "";
+            var lu_out2 = "";
+
+            lu_out1 = detectAndConvert(input_text1);
+            lu_out2 = detectAndConvert(input_text2);
+
+            document.getElementById("output").innerHTML = lu_out1 + "<br>" + lu_out2;
+        }
+
+        function detectAndConvert(input_text) {
+            var detect = "";
+            var lu_out = "";
+
+            if (input_text.includes("ะ") || input_text.includes("า")) {
+                var index_of_a = input_text.lastIndexOf("ะ");
+                var index_of_b = input_text.lastIndexOf("า");
+                
+                if (index_of_a > index_of_b) {
+                    detect = "ะ";
+                } else {
+                    detect = "า";
+                }
+
+                var nearest_index = (index_of_a > index_of_b) ? index_of_a : index_of_b;
+                var output_text = (nearest_index != -1 && nearest_index != 0) ? input_text.charAt(nearest_index - 1) : "";
+
+                lu_out = "ล" + detect + output_text + "ู";
+            }
+            
+            return lu_out;
+        }
+    </script>
+</body>
+</html>
